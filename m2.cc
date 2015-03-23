@@ -22,15 +22,12 @@ main(int argc, char**argv)
 	size_t L=N/l; if(!L) L=1;
 	char** p=new char*[L];
 		
-	for(size_t i=0; i < L; ++i) {
+	for(size_t i=0; i < L; ++i)
 		p[i]=new char[l];
-		memset(p[i], 0, l);
-	}
 	auto s1=status();
 
-	for(size_t i=0; i < L; ++i) {
-		delete p[i];
-	}
+	for(size_t i=0; i < L; ++i)
+		delete[] p[i];
 	auto s2=status();
 	delete p;
 		

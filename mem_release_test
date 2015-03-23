@@ -18,7 +18,7 @@ while(!system "./m2 $m2opt $max") {
 	$min=$max;
 	$max*=2;
 }
-if($min == $max) { print "memory is always returnd to OS\n"; exit 0; }
+if($min == $max) { print "memory is always returned to OS\n"; exit 0; }
 print "starting at boundaries: $min - $max\n" if($verb);
 
 my $mid=int(($min+$max)/2);
