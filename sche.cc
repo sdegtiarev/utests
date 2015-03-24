@@ -36,9 +36,7 @@ struct sync_sched
 {
 	std::mutex m;
 	std::condition_variable cv;
-	unsigned cnt;
-	bool verbose=0;
-	sync_sched() : cnt(0) {}
+	unsigned cnt	=0;
 };
 
 void test(int policy, sched_param const& priority, sync_sched& s) noexcept
@@ -47,10 +45,8 @@ try {
 	lock guard{s.m};
 	sched(policy, priority);
 	auto id=++s.cnt;
-	if(s.verbose)
-		std::cout<<id<<": "<<policy_tag(policy, priority)<<" is ready"<<std::endl;
 	s.cv.wait(guard);
-	std::cout<<id<<": "<<policy_tag(policy, priority)<<" is here"<<std::endl;
+	std::cout<<id<<" "<<policy_tag(policy, priority)<<std::endl;
 	--s.cnt;
 
 } catch(std::exception const &x) {
@@ -69,7 +65,7 @@ try {
 	sync_sched sync;
 	int cnt=0;
 	int opt;
-	while((opt=getopt(argc,argv,"d:b:i:f:r:vh")) != -1) {
+	while((opt=getopt(argc,argv,"d:b:i:f:r:h")) != -1) {
 		++cnt;
 		int policy=-1;
 		switch(opt) {
@@ -78,26 +74,17 @@ try {
 			case 'i': policy=SCHED_IDLE; break;
 			case 'f': policy=SCHED_FIFO; break;
 			case 'r': policy=SCHED_RR; break;
-			case 'v': sync.verbose=1; break;
 			case 'h':
 			default : usage(); return 1;
 		}
-		if(optarg) {
-			++cnt;
-			sched_param priority{atoi(optarg)};
-			std::thread th([policy,priority,&sync]{ test(policy, priority, sync); });
-			th.detach();
-		}
+		sched_param priority{atoi(optarg)};
+		std::thread th([policy,priority,&sync]{ test(policy, priority, sync); });
+		th.detach();
 	}
 	
 	while(sync.cnt < cnt) { usleep(1); }
-	if(sync.verbose)
-		std::cout<<std::string(60,'-')<<std::endl;
 	sync.cv.notify_all();
 	while(sync.cnt > 0) { usleep(1); }
-	if(sync.verbose)
-		std::cout<<std::string(60,'-')<<std::endl;
-		
 	
 	return 0;
 } catch(std::exception const& x) {
@@ -115,7 +102,11 @@ static void usage()
 	"  -i	- SCHED_IDLE, very low priority for background tasks\n"
 	"  -f	- SCHED_FIFO, high priority with no thread yield\n"
 	"  -r	- SCHED_RR, high priority with round robin\n"
-	"  -v	- verbose, print the order tasks initialized\n"
 	"  -h	- print this help and quit\n"
-	;	
+	"Note that for normal operation SCHED_OTHER, SCHED_BATCH and\n"
+	"  SCHED_IDLE must have priority 0, while SCHED_FIFO and\n"
+	"  SCHED_RR must be in range from "
+	<<sched_get_priority_min(SCHED_FIFO)<<
+	" and "<<sched_get_priority_max(SCHED_FIFO)<<"\n"
+	;
 }
