@@ -105,8 +105,8 @@ static void usage()
 	"  -h	- print this help and quit\n"
 	"Note that for normal operation SCHED_OTHER, SCHED_BATCH and\n"
 	"  SCHED_IDLE must have priority 0, while SCHED_FIFO and\n"
-	"  SCHED_RR must be in range from "
-	<<sched_get_priority_min(SCHED_FIFO)<<
-	" and "<<sched_get_priority_max(SCHED_FIFO)<<"\n"
+	"  SCHED_RR must be in range ["
+	<<sched_get_priority_min(SCHED_FIFO)<<", "
+	<<sched_get_priority_max(SCHED_FIFO)<<"]\n"
 	;
 }
