@@ -78,8 +78,11 @@ try {
 			default : usage(); return 1;
 		}
 		sched_param priority{atoi(optarg)};
+		auto x=sync.cnt;
 		std::thread th([policy,priority,&sync]{ test(policy, priority, sync); });
 		th.detach();
+		while(x == sync.cnt)
+			usleep(1);
 	}
 	
 	while(sync.cnt < cnt) { usleep(1); }
