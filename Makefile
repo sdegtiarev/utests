@@ -1,7 +1,7 @@
 
 
 CXX= g++
-CXXFLAGS= -g -std=c++11 -I$(HOME)/include
+CXXFLAGS= -g -std=c++11 -I.
 LDFLAGS=
 LDLIBS= -lpthread 
 
