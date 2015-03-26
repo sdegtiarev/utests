@@ -7,6 +7,7 @@ while($ARGV[0]=~/^-/) {
 	if($opt=~s/^-v//) { $verb=1; unshift(@ARGV, '-'.$opt) if($opt ne ""); }
 	elsif($opt=~s/^-0//) { $m2opt='-0'; unshift(@ARGV, '-'.$opt) if($opt ne ""); }
 	elsif($opt=~s/^-1//) { $m2opt='-1'; unshift(@ARGV, '-'.$opt) if($opt ne ""); }
+	elsif($opt=~s/^-t//) { $m2opt='-t'; unshift(@ARGV, '-'.$opt) if($opt ne ""); }
 	elsif($opt=~s/^-h//) { usage(); exit 0; }
 	else { die "$opt: invalid option"; }
 }
@@ -40,6 +41,9 @@ sub usage
 		" memory is returned to OS\n",
 		"Syntax: mem_release_test [-v] [-h]\n",
 		"Options:\n",
+		"  -0    : emulate the memory is never released\n",
+		"  -1    : emulate the memory is always released\n",
+		"  -t    : allocate additional byte at the end to exclude sbrk() trims\n",
 		"  -v    : print verbose info\n",
 		"  -h    : print this help\n";
 }

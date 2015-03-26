@@ -8,11 +8,14 @@ const size_t N=1<<20;
 
 main(int argc, char**argv)
 {
+	bool tail=0;
 	int opt;
-	while((opt=getopt(argc,argv,"01")) != -1)
+	while((opt=getopt(argc,argv,"01t")) != -1)
 	switch(opt) {
 		case '0': return 0;
 		case '1': return 1;
+		case 't': tail=1; break;
+		default : return 1;
 	}
 	
 	
@@ -25,6 +28,8 @@ main(int argc, char**argv)
 	for(size_t i=0; i < L; ++i)
 		p[i]=new char[l];
 	auto s1=status();
+	if(tail)
+		auto r=new char;
 
 	for(size_t i=0; i < L; ++i)
 		delete[] p[i];
