@@ -43,7 +43,7 @@ sub usage
 		"Options:\n",
 		"  -0    : emulate the memory is never released\n",
 		"  -1    : emulate the memory is always released\n",
-		"  -t    : allocate additional byte at the end to exclude sbrk() trims\n",
+		"  -t    : allocate additional byte at the end to prevent sbrk() memory trim\n",
 		"  -v    : print verbose info\n",
 		"  -h    : print this help\n";
 }
