@@ -110,6 +110,7 @@ static void usage()
 	"  SCHED_IDLE must have priority 0, while SCHED_FIFO and\n"
 	"  SCHED_RR must be in range ["
 	<<sched_get_priority_min(SCHED_FIFO)<<", "
-	<<sched_get_priority_max(SCHED_FIFO)<<"]\n"
+	<<sched_get_priority_max(SCHED_FIFO)<<"]"
+	" and under root permission\n"
 	;
 }
