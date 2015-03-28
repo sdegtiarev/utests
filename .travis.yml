@@ -1,0 +1,6 @@
+language: c
+
+script:
+  - make
+  - ./mem_release_test
+  - ./sche
