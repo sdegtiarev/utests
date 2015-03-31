@@ -86,7 +86,7 @@ try {
 		while(x == sync.cnt)
 			usleep(1);
 	}
-	if(optind >= argc) { usage(); return 1; }
+	if(argc <= 1) { usage(); return 1; }
 
 	
 	while(sync.cnt < cnt) { usleep(1); }
