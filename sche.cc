@@ -77,6 +77,8 @@ try {
 			case 'h':
 			default : usage(); return 1;
 		}
+		
+		
 		sched_param priority{atoi(optarg)};
 		auto x=sync.cnt;
 		std::thread th([policy,priority,&sync]{ test(policy, priority, sync); });
@@ -84,6 +86,8 @@ try {
 		while(x == sync.cnt)
 			usleep(1);
 	}
+	if(optind >= argc) { usage(); return 1; }
+
 	
 	while(sync.cnt < cnt) { usleep(1); }
 	sync.cv.notify_all();
